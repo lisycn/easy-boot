@@ -61,7 +61,3 @@
 ![角色详情](https://gitee.com/uploads/images/2018/0514/173154_8bb32a20_660787.png "role_detail.png")
 ![角色授权](https://gitee.com/uploads/images/2018/0514/173204_68287e03_660787.png "role_permit.png")
 ![用户列表](https://gitee.com/uploads/images/2018/0514/173213_e00fc2d5_660787.png "user_index.png")
-
-
-
-**欢迎关注以上公众号，项目涉及问题、功能点，我都会在公众号中做详细说明**
