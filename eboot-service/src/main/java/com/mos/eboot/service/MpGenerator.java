@@ -19,13 +19,13 @@ public class MpGenerator {
         AutoGenerator mpg = new AutoGenerator();
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
-        gc.setOutputDir("F://");
+        gc.setOutputDir("/Users/zhoulibo/eclipse-workspace1/");
         gc.setFileOverride(true);
         gc.setActiveRecord(true);// 不需要ActiveRecord特性的请改为false
         gc.setEnableCache(false);// XML 二级缓存
         gc.setBaseResultMap(true);// XML ResultMap
         gc.setBaseColumnList(false);// XML columList
-        gc.setAuthor("小尘哥");
+        gc.setAuthor("zlb");
 
         // 自定义文件命名，注意 %s 会自动填充表实体属性！
         gc.setServiceImplName("%sService");
@@ -38,8 +38,8 @@ public class MpGenerator {
 
         dsc.setDriverName("com.mysql.jdbc.Driver");
         dsc.setUsername("root");
-        dsc.setPassword("root");
-        dsc.setUrl("jdbc:mysql://localhost:3306/eboot");
+        dsc.setPassword("zhoulibo@110");
+        dsc.setUrl("jdbc:mysql://193.112.104.52:3306/easy-boot");
         mpg.setDataSource(dsc);
 
 
@@ -48,7 +48,7 @@ public class MpGenerator {
         strategy.setCapitalMode(true);// 全局大写命名 ORACLE 注意
         strategy.setTablePrefix(new String[] { "T_"});// 此处可以修改为您的表前缀
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
-        strategy.setInclude(new String[] {"pt_dict"}); // 需要生成的表
+        strategy.setInclude(new String[] {"user_info"}); // 需要生成的表
         mpg.setStrategy(strategy);
 
         // 包配置

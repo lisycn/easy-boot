@@ -22,7 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("api/user")
-public class UserController  extends BaseController{
+public class SysUserController  extends BaseController{
 
     @Resource
     private ISysUserService userService;
