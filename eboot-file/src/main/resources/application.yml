@@ -13,3 +13,12 @@ eureka:
 custom:
   uploadBasePath: /Users/zhoulibo/git/eboot/
   imageViewBasePath: http://localhost/file/
+
+# 七牛云配置
+# bucket是创建的存储空间名
+# path对应存储空间的访问域名
+qiniu:
+  accessKey: NjcvkLgMrOgCoUWcKmfwq5AzBwpsn3LskSnYTuvL
+  secretKey: wej0sAjWRSVs8o3wVcVlAPbrIFEaTES-hsabZpAJ
+  bucket: zlb-01
+  path: http://qny.chiguateam.com

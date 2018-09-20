@@ -48,7 +48,7 @@ spring:
   application:
     name: eboot-admin
 custom:
-  uploadPath: http://localhost:9091/accessory/upload
+  uploadPath: http://localhost:9091/qiniu/uploadImgQiniu
   imageViewPath: http://localhost:9091/accessory/open?id=
 
 

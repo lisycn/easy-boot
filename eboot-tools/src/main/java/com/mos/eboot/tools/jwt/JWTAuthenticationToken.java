@@ -9,7 +9,7 @@ public class JWTAuthenticationToken extends UsernamePasswordAuthenticationToken{
 	private static final long serialVersionUID = 1L;
 	
 	public JWTAuthenticationToken(Object principal) {
-		super(principal,null,emptyList());
+		super(principal,null);
 	}
 
 	@Override

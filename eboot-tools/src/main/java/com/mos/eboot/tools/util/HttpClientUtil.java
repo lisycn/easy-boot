@@ -54,7 +54,7 @@ public class HttpClientUtil {
      * @return
      */
     public static String get(String url) {
-        return get(url, new HashMap<>());
+        return get(url, null);
     }
 
     /**
@@ -94,7 +94,7 @@ public class HttpClientUtil {
      * @return
      */
     public static String post(String url) {
-        return post(url, new HashMap<>());
+        return post(url, null);
     }
 
     /**

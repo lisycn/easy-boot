@@ -13,6 +13,8 @@
     4、数据库：mysql
     5、UI：LayUI
     6、session共享：spring-session-redis
+    7、服务器端Java模板引擎：thymeleaf
+    8、集成WebSocket
 # 包含模块
 
 ---

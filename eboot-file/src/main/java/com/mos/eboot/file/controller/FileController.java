@@ -35,7 +35,6 @@ public class FileController extends BaseController {
 
     @RequestMapping("upload")
     public ResultModel<String> upload(@RequestParam("file") MultipartFile file, String userId, @RequestParam("category") String category) {
-
         String originalName = file.getOriginalFilename();
         long fileSize = file.getSize();
         String ext = originalName.substring(originalName.lastIndexOf(".") + 1, originalName.length());
@@ -86,5 +85,6 @@ public class FileController extends BaseController {
     private String genTmpFileName() {
         return DateUtil.date_string(new Date(), "yyyyMMddHHmmssssss");
     }
-
+    
+    
 }
