@@ -41,3 +41,14 @@ spring:
   groovy:
     template:
       cache: false
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://admin:admin@localhost:8761/eureka/
+  instance:
+    appname: eboot-websocket
+    leaseRenewalIntervalInSeconds: 1
+    lease-expiration-duration-in-seconds: 2
+    prefer-ip-address: true
+#    instance-id: 127.0.0.1:8882
+

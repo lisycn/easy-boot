@@ -9,26 +9,33 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.lang3.StringUtils;
 import org.jim.common.Const;
 import org.jim.common.ImPacket;
 import org.jim.common.ImSessionContext;
 import org.jim.common.ImStatus;
-import org.jim.common.packets.Command;
-import org.jim.common.utils.JsonKit;
-import org.jim.server.command.CommandManager;
-import org.jim.server.command.handler.JoinGroupReqHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.tio.core.ChannelContext;
 import org.jim.common.http.HttpConst;
+import org.jim.common.packets.Command;
 import org.jim.common.packets.Group;
 import org.jim.common.packets.LoginReqBody;
 import org.jim.common.packets.LoginRespBody;
 import org.jim.common.packets.User;
 import org.jim.common.session.id.impl.UUIDSessionIdGenerator;
+import org.jim.common.utils.JsonKit;
 import org.jim.common.utils.Md5;
+import org.jim.server.command.CommandManager;
+import org.jim.server.command.handler.JoinGroupReqHandler;
 import org.jim.server.command.handler.processor.login.LoginProcessorIntf;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.tio.core.ChannelContext;
+
+import com.mos.eboot.im.api.IUserInfoService;
+import com.mos.eboot.platform.entity.UserInfo;
 
 import cn.hutool.core.util.RandomUtil;
 
@@ -36,8 +43,15 @@ import cn.hutool.core.util.RandomUtil;
  * @author WChao
  *
  */
-public class LoginServiceProcessor implements LoginProcessorIntf{
 
+@Component
+public class LoginServiceProcessor implements LoginProcessorIntf{
+	private static IUserInfoService userInfoService;
+
+	@Autowired
+	public void setWxgzBuriedFileFacade(IUserInfoService userInfoService) {
+		LoginServiceProcessor.userInfoService = userInfoService;
+	}
 	private Logger logger = LoggerFactory.getLogger(LoginServiceProcessor.class);
 
 	public static final Map<String, User> tokenMap = new HashMap<>();
@@ -128,21 +142,28 @@ public class LoginServiceProcessor implements LoginProcessorIntf{
 	public LoginRespBody doLogin(LoginReqBody loginReqBody , ChannelContext channelContext) {
 		String loginname = loginReqBody.getLoginname();
 		String password = loginReqBody.getPassword();
-		ImSessionContext imSessionContext = (ImSessionContext)channelContext.getAttribute();
-		String handshakeToken = imSessionContext.getToken();
-		User user;
-		LoginRespBody loginRespBody;
-		if (!StringUtils.isBlank(handshakeToken)) {
-			user = this.getUser(handshakeToken);
-		}else{
-			user = this.getUser(loginname, password);
+		logger.info("-------------》获取微服务");
+		UserInfo userInfo =userInfoService.getByUsername(loginname);
+		if(userInfo!=null) {
+			if(userInfo.getLoginPassword().equals(password)) {
+				ImSessionContext imSessionContext = (ImSessionContext)channelContext.getAttribute();
+				String handshakeToken = imSessionContext.getToken();
+				User user;
+				LoginRespBody loginRespBody;
+				if (!StringUtils.isBlank(handshakeToken)) {
+					user = this.getUser(handshakeToken);
+				}else{
+					user = this.getUser(loginname, password);
+				}
+				if(user == null){
+					loginRespBody = new LoginRespBody(Command.COMMAND_LOGIN_RESP,ImStatus.C10008);
+				}else{
+					loginRespBody = new LoginRespBody(Command.COMMAND_LOGIN_RESP,ImStatus.C10007,user);
+				}
+				return loginRespBody;
+			}
 		}
-		if(user == null){
-			loginRespBody = new LoginRespBody(Command.COMMAND_LOGIN_RESP,ImStatus.C10008);
-		}else{
-			loginRespBody = new LoginRespBody(Command.COMMAND_LOGIN_RESP,ImStatus.C10007,user);
-		}
-		return loginRespBody;
+		return null;
 	}
 
 	@Override

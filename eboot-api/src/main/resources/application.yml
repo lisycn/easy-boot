@@ -7,5 +7,13 @@ spring:
         url: http://localhost:8888
   application:
     name: eboot-api
-
-
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://admin:admin@localhost:8761/eureka/
+  instance:
+    appname: boot-api
+    leaseRenewalIntervalInSeconds: 1
+    lease-expiration-duration-in-seconds: 2
+    prefer-ip-address: true
+    #instance-id: 127.0.0.1:9090

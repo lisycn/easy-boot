@@ -130,5 +130,9 @@
 		    <groupId>com.qiniu</groupId>
 		    <artifactId>qiniu-java-sdk</artifactId>
 		</dependency>
+		<dependency>
+		    <groupId>joda-time</groupId>
+		    <artifactId>joda-time</artifactId>
+		</dependency>
     </dependencies>
 </project>
