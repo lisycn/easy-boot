@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.w3.org/1999/xhtml">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="shortcut icon" href="/favicon.ico">
-<title>J-IM:支持百万在线用户</title>
+<title>IM:支持百万在线用户</title>
 <style type="text/css" media="screen">
 	*{margin:0;padding:0;}
 	#wrap{margin:10px auto; width:80%; height:99%;}
@@ -16,7 +17,7 @@
 	.content{width:100%;overflow:hidden;height:80%;margin:0 0 5px 0;}
 	.online{width: 15%;height: 100%;float:right;background: #FCFCFC;border:solid 1px #000;box-sizing:border-box;}
 </style>
-<script type="text/javascript" src="./static/js/date.js"></script>
+<script th:src="@{/js/date.js}"></script>
 </head>
 <script>
 var socket ;

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.mos.eboot.platform.entity.SysUser;
 import com.mos.eboot.platform.entity.UserInfo;
 import com.mos.eboot.tools.result.ResultModel;
 import com.mos.eboot.vo.ChartVO;
@@ -60,7 +59,7 @@ public interface IUserInfoService {
 	 * @param user
 	 * @return
 	 */
-	@RequestMapping(value = "api/user/all",method = RequestMethod.POST)
-	ResultModel<List<UserInfo>> all(SysUser user);
+	@RequestMapping(value = "/userInfo/all",method = RequestMethod.POST)
+	List<UserInfo> all(UserInfo user);
 
 }

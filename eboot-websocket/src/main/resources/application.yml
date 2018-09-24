@@ -35,7 +35,7 @@ spring:
     encoding: utf-8
     #去掉thymeleaf的严格的模板校验
     mode: LEGACYHTML5
-    prefix: classpath:/page/
+    prefix: classpath:/templates/
     suffix: .html
     excluded-view-names:
   groovy:
@@ -51,4 +51,5 @@ eureka:
     lease-expiration-duration-in-seconds: 2
     prefer-ip-address: true
 #    instance-id: 127.0.0.1:8882
-
+resources:
+      static-locations: ["/page/","/static/"]

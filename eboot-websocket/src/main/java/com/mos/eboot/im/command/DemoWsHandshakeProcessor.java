@@ -15,8 +15,11 @@ import org.jim.server.command.handler.LoginReqHandler;
 import org.jim.server.command.handler.processor.handshake.WsHandshakeProcessor;
 import org.tio.core.ChannelContext;
 /**
- * @author WChao
- *
+ * 
+* @ClassName: DemoWsHandshakeProcessor 
+* @Description: TODO(WS握手方法，返回null 则标识业务层不同意握手，失败) 
+* @author Mr.zhou 
+* @date 2018年9月22日 下午2:31:01
  */
 public class DemoWsHandshakeProcessor extends WsHandshakeProcessor{
 

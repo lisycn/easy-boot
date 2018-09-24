@@ -30,6 +30,7 @@ public class UserInfo extends Model<UserInfo> {
     /**
      * 用户昵称
      */
+	@TableField("nick")
 	private String nick;
     /**
      * 用户登录账户
@@ -79,6 +80,7 @@ public class UserInfo extends Model<UserInfo> {
     /**
      * 预留字段
      */
+	@TableField("extras")
 	private String extras;
     /**
      * 创建时间

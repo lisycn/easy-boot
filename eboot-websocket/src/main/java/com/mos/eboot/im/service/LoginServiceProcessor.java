@@ -31,6 +31,8 @@ import org.jim.server.command.handler.processor.login.LoginProcessorIntf;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.tio.core.ChannelContext;
 
@@ -40,12 +42,15 @@ import com.mos.eboot.platform.entity.UserInfo;
 import cn.hutool.core.util.RandomUtil;
 
 /**
- * @author WChao
- *
+ * 
+* @ClassName: LoginServiceProcessor 
+* @Description: TODO(登录业务处理类) 
+* @author Mr.zhou 
+* @date 2018年9月22日 下午3:10:23
  */
-
 @Component
 public class LoginServiceProcessor implements LoginProcessorIntf{
+	private static final String passwordKey="{bcrypt}$2a$10$C/TJe8I4IRsUvmnTfSU39uPNyLRyfGDQw/dXrYRCWrVNZewWIO9dS";
 	private static IUserInfoService userInfoService;
 
 	@Autowired
@@ -55,15 +60,6 @@ public class LoginServiceProcessor implements LoginProcessorIntf{
 	private Logger logger = LoggerFactory.getLogger(LoginServiceProcessor.class);
 
 	public static final Map<String, User> tokenMap = new HashMap<>();
-
-	private static String[] familyName = new String[] { "谭", "刘", "张", "李", "胡", "沈", "朱", "钱", "王", "伍", "赵", "孙", "吕", "马", "秦", "毛", "成", "梅", "黄", "郭", "杨", "季", "童", "习", "郑",
-			"吴", "周", "蒋", "卫", "尤", "何", "魏", "章", "郎", " 唐", "汤", "苗", "孔", "鲁", "韦", "任", "袁", "贺", "狄朱" };
-
-	private static String[] secondName = new String[] { "艺昕", "红薯", "明远", "天蓬", "三丰", "德华", "歌", "佳", "乐", "天", "燕子", "子牛", "海", "燕", "花", "娟", "冰冰", "丽娅", "大为", "无为", "渔民", "大赋",
-			"明", "远平", "克弱", "亦菲", "靓颖", "富城", "岳", "先觉", "牛", "阿狗", "阿猫", "辰", "蝴蝶", "文化", "冲之", "悟空", "行者", "悟净", "悟能", "观", "音", "乐天", "耀扬", "伊健", "炅", "娜", "春花", "秋香", "春香",
-			"大为", "如来", "佛祖", "科比", "罗斯", "詹姆屎", "科神", "科蜜", "库里", "卡特", "麦迪", "乔丹", "魔术师", "加索尔", "法码尔", "南斯", "伊哥", "杜兰特", "保罗", "杭州", "爱湘", "湘湘", "昕", "函", "鬼谷子", "膑", "荡",
-			"子家", "德利优视", "五方会谈", "来电话了", "T-IO", "Talent" ,"轨迹","超"};
-	
 	/**
 	 * 根据用户名和密码获取用户
 	 * @param loginname
@@ -71,11 +67,11 @@ public class LoginServiceProcessor implements LoginProcessorIntf{
 	 * @return
 	 * @author: WChao
 	 */
-	public User getUser(String loginname, String password) {
+	public User getUser(String loginname, String password,UserInfo userinfo) {
 		String text = loginname+password;
 		String key = Const.authkey;
 		String token = Md5.sign(text, key, HttpConst.CHARSET_NAME);
-		User user = getUser(token);
+		User user = getUser(token,userinfo);
 		user.setId(loginname);
 		return user;
 	}
@@ -85,14 +81,13 @@ public class LoginServiceProcessor implements LoginProcessorIntf{
 	 * @return
 	 * @author: WChao
 	 */
-	public User getUser(String token) {
+	public User getUser(String token,UserInfo userinfo) {
 		//demo中用map，生产环境需要用cache
 		User user = tokenMap.get(token);
 		if (user == null) {
 			user = new User();
-			user.setId(UUIDSessionIdGenerator.instance.sessionId(null));
-			user.setNick(familyName[RandomUtil.randomInt(0, familyName.length - 1)] + secondName[RandomUtil.randomInt(0, secondName.length - 1)]);
-			
+			user.setId(userinfo.getLoginAccount());
+			user.setNick(userinfo.getNick());
 			user.setGroups(initGroups(user));
 			user.setFriends(initFriends(user));
 			user.setAvatar(nextImg());
@@ -111,15 +106,23 @@ public class LoginServiceProcessor implements LoginProcessorIntf{
 		groups.add(new Group("100","J-IM朋友圈"));
 		return groups;
 	}
+	
 	public List<Group> initFriends(User user){
 		List<Group> friends = new ArrayList<Group>();
-		Group myFriend = new Group("1","我的好友");
 		List<User> myFriendGroupUsers = new ArrayList<User>();
-		User user1 = new User();
-		user1.setId(UUIDSessionIdGenerator.instance.sessionId(null));
-		user1.setNick(familyName[RandomUtil.randomInt(0, familyName.length - 1)] + secondName[RandomUtil.randomInt(0, secondName.length - 1)]);
-		user1.setAvatar(nextImg());
-		myFriendGroupUsers.add(user1);
+		Group myFriend = new Group("1","我的好友");
+		UserInfo user2=new UserInfo();
+		user2.setIsDel(1);
+		List<UserInfo> userinfoList=userInfoService.all(user2);
+		if(userinfoList.size()>0) {
+			for (UserInfo userInfo : userinfoList) {
+				User user1 = new User();
+				user1.setId(userInfo.getId().toString());
+				user1.setNick(userInfo.getNick());
+				user1.setAvatar(nextImg());
+				myFriendGroupUsers.add(user1);
+			}
+		}
 		myFriend.setUsers(myFriendGroupUsers);
 		friends.add(myFriend);
 		return friends;
@@ -142,18 +145,30 @@ public class LoginServiceProcessor implements LoginProcessorIntf{
 	public LoginRespBody doLogin(LoginReqBody loginReqBody , ChannelContext channelContext) {
 		String loginname = loginReqBody.getLoginname();
 		String password = loginReqBody.getPassword();
-		logger.info("-------------》获取微服务");
+		logger.info("-------------》根据用户名字获取微服务");
 		UserInfo userInfo =userInfoService.getByUsername(loginname);
 		if(userInfo!=null) {
-			if(userInfo.getLoginPassword().equals(password)) {
+			//对密码进行加密
+			String encode = Md5.sign(password, passwordKey, HttpConst.CHARSET_NAME);
+			if(userInfo.getLoginPassword().equals(encode)) {
 				ImSessionContext imSessionContext = (ImSessionContext)channelContext.getAttribute();
 				String handshakeToken = imSessionContext.getToken();
-				User user;
+				User user = new User();
 				LoginRespBody loginRespBody;
 				if (!StringUtils.isBlank(handshakeToken)) {
-					user = this.getUser(handshakeToken);
+					user = this.getUser(handshakeToken,userInfo);
 				}else{
-					user = this.getUser(loginname, password);
+//					user.setId(userInfo.getId().toString());
+//					user.setAvatar(userInfo.getUserAvatar());
+//					//获取用户的好友列表：需要去数据库里面查询
+//					user.setFriends(initGroups(user));
+//					//获取群组：也需要去查
+//					user.setGroups(initFriends(user));
+//					user.setNick(userInfo.getNick());
+//					user.setSign(userInfo.getUserSign());
+//					user.setStatus(userInfo.getUserStatus());
+//					user.setTerminal(userInfo.getUserTerminal());
+					user = this.getUser(loginname, password,userInfo);
 				}
 				if(user == null){
 					loginRespBody = new LoginRespBody(Command.COMMAND_LOGIN_RESP,ImStatus.C10008);
@@ -161,7 +176,11 @@ public class LoginServiceProcessor implements LoginProcessorIntf{
 					loginRespBody = new LoginRespBody(Command.COMMAND_LOGIN_RESP,ImStatus.C10007,user);
 				}
 				return loginRespBody;
+			}else {
+				logger.error("密码错误");
 			}
+		}else {
+			logger.error("用户名错误");
 		}
 		return null;
 	}
@@ -194,5 +213,11 @@ public class LoginServiceProcessor implements LoginProcessorIntf{
 	public String name() {
 		
 		return "default";
+	}
+	public static void main(String[] args) {
+		//对密码进行加密
+		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+		String encode = passwordEncoder.encode("1");
+		System.out.println(encode);
 	}
 }

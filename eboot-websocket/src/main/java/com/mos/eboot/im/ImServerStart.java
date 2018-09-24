@@ -16,6 +16,7 @@ import org.tio.core.ssl.SslConfig;
 import com.jfinal.kit.PropKit;
 import com.mos.eboot.im.command.DemoWsHandshakeProcessor;
 import com.mos.eboot.im.listener.ImDemoGroupListener;
+import com.mos.eboot.im.listener.MysqlIMesssageHelper;
 import com.mos.eboot.im.service.LoginServiceProcessor;
 
 /**
@@ -35,6 +36,10 @@ public class ImServerStart {
 			initSsl(imConfig);
 			//设置群组监听器，非必须，根据需要自己选择性实现;
 			imConfig.setImGroupListener(new ImDemoGroupListener());
+			//开启持久开关
+			imConfig.setIsStore("on");
+			//设置持久化到数据库
+			imConfig.setMessageHelper(new MysqlIMesssageHelper());
 			ImServerStarter imServerStarter = new ImServerStarter(imConfig);
 			/*****************start 以下处理器根据业务需要自行添加与扩展，每个Command都可以添加扩展,此处为demo中处理**********************************/
 			HandshakeReqHandler handshakeReqHandler = CommandManager.getCommand(Command.COMMAND_HANDSHAKE_REQ, HandshakeReqHandler.class);

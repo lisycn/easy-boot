@@ -48,7 +48,7 @@ public class MpGenerator {
         strategy.setCapitalMode(true);// 全局大写命名 ORACLE 注意
         strategy.setTablePrefix(new String[] { "T_"});// 此处可以修改为您的表前缀
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
-        strategy.setInclude(new String[] {"user_info"}); // 需要生成的表
+        strategy.setInclude(new String[] {"user_message"}); // 需要生成的表
         mpg.setStrategy(strategy);
 
         // 包配置

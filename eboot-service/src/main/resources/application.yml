@@ -48,3 +48,13 @@ mybatis-plus:
   configuration.jdbcTypeForNull: NULL
   configuration.cache-enabled: false
   configuration.call-setters-on-nulls: true
+
+# SQL日志打印
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    org:
+      springframework: INFO
+    com:
+      ibatis: DEBUG
+    com.mos.eboot.service.platform.mapper: DEBUG
