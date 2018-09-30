@@ -5,8 +5,8 @@ package com.mos.eboot.tools.result;
  * @author wangchao
  */
 public enum ResultStatus {
-    SUCCESS("0", "成功"),
-    FAIL("1", "失败"),
+    SUCCESS("200", "成功"),
+    FAIL("201", "失败"),
     SYS_ERROR("500","系统错误");
 
     /**

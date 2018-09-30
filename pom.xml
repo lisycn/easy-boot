@@ -320,6 +320,11 @@
                 <artifactId>eboot-tools</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.mos</groupId>
+                <artifactId>eboot-admin</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger2 -->
             <dependency>
                 <groupId>io.springfox</groupId>
@@ -440,5 +445,6 @@
         <module>eboot-consumer</module>
         <module>eboot-actuator</module>
         <module>eboot-websocket</module>
+        <module>eboot-email</module>
     </modules>
 </project>

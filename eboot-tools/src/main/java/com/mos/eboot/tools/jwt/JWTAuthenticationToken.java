@@ -2,8 +2,6 @@ package com.mos.eboot.tools.jwt;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
-import static java.util.Collections.emptyList;
-
 public class JWTAuthenticationToken extends UsernamePasswordAuthenticationToken{
 	
 	private static final long serialVersionUID = 1L;

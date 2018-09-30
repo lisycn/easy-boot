@@ -1,6 +1,7 @@
 package com.mos.eboot.tools.jwt;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
 
@@ -31,5 +32,4 @@ public class JWTAuthenticationFilter extends GenericFilterBean {
     	}
     	filterChain.doFilter(request,response);
     }
-
 }
