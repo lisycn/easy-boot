@@ -29,7 +29,7 @@ public class ApiApplicationApp {
 		return new BCryptPasswordEncoder();
 	}
     public static void main(String[] args) {
-    	LOGGER.info("--------------------API系统启动--------------------");
         SpringApplication.run(ApiApplicationApp.class, args);
+        LOGGER.info("--------------------API系统启动--------------------");
     }
 }
