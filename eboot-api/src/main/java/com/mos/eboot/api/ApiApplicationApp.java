@@ -10,7 +10,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
- * @author 小尘哥
+ * 
+ * @ClassName: ApiApplicationApp
+ * @Description: 接口提供工程
+ * @author Mr.zhou
+ * @date 2018年10月8日 下午3:09:46
+ *
  */
 @EnableEurekaClient
 @EnableFeignClients
@@ -30,6 +35,6 @@ public class ApiApplicationApp {
 	}
     public static void main(String[] args) {
         SpringApplication.run(ApiApplicationApp.class, args);
-        LOGGER.info("--------------------API系统启动--------------------");
+        LOGGER.info("--------------------API系统启动完成--------------------");
     }
 }

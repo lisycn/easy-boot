@@ -74,14 +74,12 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         }
     }
 
-    /***
-     * 登录attemptAuthentication执行之后，会执行该方法进行认证
-     * 再执行authenticate方法，具体认证
-     *
-     * 是否可以提供输入类型的认证服务
-     * @param authentication
-     * @return
-     */
+	/***
+	 * 登录attemptAuthentication执行之后，会执行该方法进行认证 再执行authenticate方法，具体认证 是否可以提供输入类型的认证服务
+	 * 
+	 * @param authentication
+	 * @return
+	 */
     @Override
     public boolean supports(Class<?> authentication) {
         return authentication.equals(UsernamePasswordAuthenticationToken.class);
